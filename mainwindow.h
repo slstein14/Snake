@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "gamewindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +25,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    GameWindow* game;
 };
 
 #endif // MAINWINDOW_H
