@@ -8,11 +8,20 @@
 #include <fstream>
 #include <vector>
 #include <iostream>
+#include <QDir>
+#include <QCoreApplication>
 using namespace std;
 
 GameWindow::GameWindow(QWidget *parent) :
     QWidget(parent)
 {
+#ifdef __APPLE__
+     QDir bin(QCoreApplication::applicationDirPath());
+     bin.cdUp();
+     bin.cdUp();
+     bin.cdUp();
+     QDir::setCurrent(bin.absolutePath());
+ #endif
         QPixmap bkgnd("images/background.jpg");
         bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
 //        qDebug()<<"Size: ";

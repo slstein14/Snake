@@ -4,11 +4,20 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QFont>
+#include <QDir>
+#include <QCoreApplication>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+#ifdef __APPLE__
+     QDir bin(QCoreApplication::applicationDirPath());
+     bin.cdUp();
+     bin.cdUp();
+     bin.cdUp();
+     QDir::setCurrent(bin.absolutePath());
+ #endif
     ui->setupUi(this);
     QPixmap bkgnd("images/Snake.png");
     bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
