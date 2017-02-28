@@ -10,16 +10,23 @@
 #include <QPushButton>
 #include <vector>
 #include <QGenericMatrix>
+#include "player.h"
 
 class GameWindow : public QWidget
 {
     Q_OBJECT
 private:
-    QGenericMatrix<50,50,int>* matrix;
-
+    QTimer *timer;
+    Player *player;
 
 public:
     GameWindow(QWidget *parent = 0);
+    void paintEvent(QPaintEvent *e);
+    void keyPressEvent(QKeyEvent *evt);
+
+
+public slots:
+    void updateField();
 };
 
 #endif // GAMEWINDOW_H

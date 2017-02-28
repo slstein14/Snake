@@ -10,6 +10,7 @@
 #include <iostream>
 #include <QDir>
 #include <QCoreApplication>
+#include "player.h"
 using namespace std;
 
 GameWindow::GameWindow(QWidget *parent) :
@@ -30,10 +31,72 @@ GameWindow::GameWindow(QWidget *parent) :
         palette.setBrush(QPalette::Background, bkgnd);
 
         this->setPalette(palette);
-        int values[2500]={0};
-        matrix = new QGenericMatrix<50,50,int>(values);
-//        for(int i=0;i<50;i++){
-//            matrix->operator (i)(0)
-//                    matrix->
-//        }
+        //tick timer for movements
+        timer = new QTimer();
+        timer->setInterval(200);
+        connect(timer, SIGNAL(timeout()), this, SLOT(updateField()));
+        timer->start();
+
+        //initialize map borders
+        int matrix[48][64];
+        for(int i=0;i<48;i++){
+            for(int j=0;j<64;j++){
+                if(0==j||0==i||63==j||47==i){
+                    matrix[i][j]=3;
+                }
+                else matrix[i][j]=0;
+            }
+        }
+
+
+        player = new Player(this);
+}
+
+void GameWindow::paintEvent(QPaintEvent *e)
+{
+    qDebug()<<"PaintEvent";
+    QPainter painter(this);
+    player->drawPlayer(painter);
+
+
+    //Object Movement
+    if(2==player->getPlayerDirection()){
+        player->setXCoord(player->getXCoord()+1);
+    }
+    else if(1==player->getPlayerDirection()){
+
+        player->setXCoord(player->getXCoord()-1);
+    }
+    else if(0==player->getPlayerDirection()){
+        player->setYCoord(player->getYCoord()-1);
+    }
+    else{
+        player->setYCoord(player->getYCoord()+1);
+    }
+}
+
+void GameWindow::keyPressEvent(QKeyEvent *evt)
+{
+    switch(evt->key())
+        {
+        case Qt::Key_Right:
+            player->setDirection(2);
+            break;
+        case Qt::Key_Down:
+        player->setDirection(3);
+            break;
+        case Qt::Key_Up:
+        player->setDirection(0);
+            break;
+        case Qt::Key_Left:
+        player->setDirection(1);
+            break;
+        default:
+            break;
+        }
+}
+
+void GameWindow::updateField()
+{
+    this->update();
 }
