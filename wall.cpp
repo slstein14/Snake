@@ -21,7 +21,7 @@ Wall::Wall(QWidget *parent)
 
 void Wall::drawWall(QPainter &painter)
 {
-    qDebug()<<"Wall PaintEvent at X: "<<posX<<" Y: "<<posY;
+   // qDebug()<<"Wall PaintEvent at X: "<<posX<<" Y: "<<posY;
     painter.drawPixmap(10*posX, 10*posY, sizeX, sizeY, *image);//Converts matrix location to pixel location
 }
 

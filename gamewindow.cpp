@@ -39,7 +39,6 @@ GameWindow::GameWindow(QWidget *parent) :
         timer->start();
         wallnumber=0;
         //initialize map borders
-        int matrix[48][64];
         for(int i=0;i<48;i++){
             for(int j=0;j<64;j++){
                 if(0==j||0==i||63==j||47==i){
@@ -53,10 +52,13 @@ GameWindow::GameWindow(QWidget *parent) :
                 else matrix[i][j]=0;
             }
         }
+        for(int i=4;i>1;i--){
+            player = new Player(this);
+            player->setXCoord(i);
+            player->setYCoord(1);
+            segments.push_back(player);
+        }
 
-
-        player = new Player(this);
-//        wall = new Wall(this);
 }
 
 void GameWindow::paintEvent(QPaintEvent *e)
@@ -64,28 +66,38 @@ void GameWindow::paintEvent(QPaintEvent *e)
     if(timer->isActive()){
         qDebug()<<"PaintEvent";
         QPainter painter(this);
-        player->drawPlayer(painter);
+
+        for(int i=0;i<segments.size();i++){
+            (*(segments.at(i))).drawPlayer(painter);
+        }
+
         for(int i=0;i<walls.size();i++){
             (*(walls.at(i))).drawWall(painter);
         }
-//        wall->drawWall(painter);
 
         //Object Movement
+        matrix[(*(segments.at(segments.size()-1))).getYCoord()][(*(segments.at(segments.size()-1))).getXCoord()]=0;
+
+        rotate(segments.begin(),segments.end()-1,segments.end());
         if(2==player->getPlayerDirection()){
-            player->setXCoord(player->getXCoord()+1);
+            (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord()+1);
+            (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord());
         }
         else if(1==player->getPlayerDirection()){
-
-            player->setXCoord(player->getXCoord()-1);
+            (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord()-1);
+            (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord());
         }
         else if(0==player->getPlayerDirection()){
-            player->setYCoord(player->getYCoord()-1);
+            (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord());
+            (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord()-1);
         }
         else{
-            player->setYCoord(player->getYCoord()+1);
+            (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord());
+            (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord()+1);
         }
+        matrix[(*(segments.at(0))).getYCoord()][(*(segments.at(0))).getXCoord()]=1;
 
-        if((player->getXCoord()<0)||(player->getXCoord()>63)||(player->getYCoord()<0)||(player->getYCoord()>47)){
+        if(((*(segments.at(0))).getXCoord()<0)||((*(segments.at(0))).getXCoord()>63)||((*(segments.at(0))).getYCoord()<0)||((*(segments.at(0))).getYCoord()>47)){
             timer->stop();
             QMessageBox mbox;
             mbox.setText("Game Over");
@@ -100,16 +112,24 @@ void GameWindow::keyPressEvent(QKeyEvent *evt)
     switch(evt->key())
         {
         case Qt::Key_Right:
-            player->setDirection(2);
+            if(player->getPlayerDirection()!=1){
+                player->setDirection(2);
+            }
             break;
-        case Qt::Key_Down:
-        player->setDirection(3);
+            case Qt::Key_Down:
+        if(player->getPlayerDirection()!=0){
+                player->setDirection(3);
+            }
             break;
         case Qt::Key_Up:
-        player->setDirection(0);
+            if(player->getPlayerDirection()!=3){
+                player->setDirection(0);
+            }
             break;
         case Qt::Key_Left:
-        player->setDirection(1);
+            if(player->getPlayerDirection()!=2){
+                player->setDirection(1);
+            }
             break;
         default:
             break;

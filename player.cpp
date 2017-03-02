@@ -12,8 +12,8 @@ Player::Player(QWidget *parent)
      bin.cdUp();
      QDir::setCurrent(bin.absolutePath());
  #endif
-        posX = 1; //starts at 10,10 in matrix
-        posY = 1;
+        posX = 3; //starts at 30,30 in matrix
+        posY = 3;
         sizeX = 10;//size is 10x10px to start (1 segment)
         sizeY = 10;
         playerDirection=2;

@@ -24,7 +24,8 @@ private:
     Wall* wall;
     int wallnumber;
     vector<Wall*>walls;
-
+    vector<Player*>segments;
+    int matrix[48][64];
 public:
     GameWindow(QWidget *parent = 0);
     void paintEvent(QPaintEvent *e);
