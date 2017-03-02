@@ -1,17 +1,14 @@
 #include "gamewindow.h"
 #include <QKeyEvent>
 #include <QDebug>
-#include <QRect>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <cstdlib>
-#include <fstream>
 #include <vector>
-#include <iostream>
+#include <stdlib.h>
+#include <time.h>
 #include <QDir>
 #include <QCoreApplication>
 #include "player.h"
 #include "wall.h"
+#include "apple.h"
 using namespace std;
 
 GameWindow::GameWindow(QWidget *parent) :
@@ -30,11 +27,11 @@ GameWindow::GameWindow(QWidget *parent) :
 //        qDebug()<<this->size();//640x480
         QPalette palette;
         palette.setBrush(QPalette::Background, bkgnd);
-
         this->setPalette(palette);
+
         //tick timer for movements
         timer = new QTimer();
-        timer->setInterval(200);
+        timer->setInterval(100);
         connect(timer, SIGNAL(timeout()), this, SLOT(updateField()));
         timer->start();
         wallnumber=0;
@@ -58,7 +55,9 @@ GameWindow::GameWindow(QWidget *parent) :
             player->setYCoord(1);
             segments.push_back(player);
         }
-
+        apple = new Apple(this);
+        this->moveApple();//initialize apple randomly
+        srand(time(0));
 }
 
 void GameWindow::paintEvent(QPaintEvent *e)
@@ -67,42 +66,15 @@ void GameWindow::paintEvent(QPaintEvent *e)
         qDebug()<<"PaintEvent";
         QPainter painter(this);
 
+        apple->drawApple(painter);
+
+
         for(int i=0;i<segments.size();i++){
             (*(segments.at(i))).drawPlayer(painter);
         }
 
         for(int i=0;i<walls.size();i++){
             (*(walls.at(i))).drawWall(painter);
-        }
-
-        //Object Movement
-        matrix[(*(segments.at(segments.size()-1))).getYCoord()][(*(segments.at(segments.size()-1))).getXCoord()]=0;
-
-        rotate(segments.begin(),segments.end()-1,segments.end());
-        if(2==player->getPlayerDirection()){
-            (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord()+1);
-            (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord());
-        }
-        else if(1==player->getPlayerDirection()){
-            (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord()-1);
-            (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord());
-        }
-        else if(0==player->getPlayerDirection()){
-            (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord());
-            (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord()-1);
-        }
-        else{
-            (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord());
-            (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord()+1);
-        }
-        matrix[(*(segments.at(0))).getYCoord()][(*(segments.at(0))).getXCoord()]=1;
-
-        if(((*(segments.at(0))).getXCoord()<0)||((*(segments.at(0))).getXCoord()>63)||((*(segments.at(0))).getYCoord()<0)||((*(segments.at(0))).getYCoord()>47)){
-            timer->stop();
-            QMessageBox mbox;
-            mbox.setText("Game Over");
-               mbox.exec();
-            this->close();
         }
     }
 }
@@ -133,10 +105,72 @@ void GameWindow::keyPressEvent(QKeyEvent *evt)
             break;
         default:
             break;
-        }
+    }
+}
+
+void GameWindow::moveSnake()
+{
+    //Object Movement
+    int backX=(*(segments.at(segments.size()-1))).getXCoord();
+    int backY=(*(segments.at(segments.size()-1))).getYCoord();
+    matrix[backY][backX]=0;
+    rotate(segments.begin(),segments.end()-1,segments.end());
+
+    if(2==player->getPlayerDirection()){
+        (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord()+1);
+        (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord());
+    }
+    else if(1==player->getPlayerDirection()){
+        (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord()-1);
+        (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord());
+    }
+    else if(0==player->getPlayerDirection()){
+        (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord());
+        (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord()-1);
+    }
+    else{
+        (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord());
+        (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord()+1);
+    }
+    if(2==matrix[(*(segments.at(0))).getYCoord()][(*(segments.at(0))).getXCoord()]){
+        appleEaten=true;
+        Player *newseg = new Player(this);
+        newseg->setXCoord(backX);
+        newseg->setYCoord(backY);
+        segments.push_back(newseg);
+    }
+
+    if((3==matrix[(*(segments.at(0))).getYCoord()][(*(segments.at(0))).getXCoord()])||(1==matrix[(*(segments.at(0))).getYCoord()][(*(segments.at(0))).getXCoord()])){
+        timer->stop();
+        QMessageBox mbox;
+        mbox.setText("Game Over");
+           mbox.exec();
+        this->close();
+    }
+
+    matrix[(*(segments.at(0))).getYCoord()][(*(segments.at(0))).getXCoord()]=1;
+}
+
+void GameWindow::moveApple()
+{
+    matrix[apple->getYCoord()][apple->getXCoord()]=0;
+    int x=0;
+    int y=0;
+    while(0!=matrix[y][x]){
+        x = rand()%64;
+        y = rand()%48;
+    }
+    apple->setXCoord(x);
+    apple->setYCoord(y);
+    matrix[y][x]=2;
+    appleEaten=false;
 }
 
 void GameWindow::updateField()
 {
+    this->moveSnake();
+    if(appleEaten){
+        this->moveApple();
+    }
     this->update();
 }

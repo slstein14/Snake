@@ -16,11 +16,13 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     gamewindow.cpp \
     player.cpp \
-    wall.cpp
+    wall.cpp \
+    apple.cpp
 
 HEADERS  += mainwindow.h \
     gamewindow.h \
     player.h \
-    wall.h
+    wall.h \
+    apple.h
 
 FORMS    += mainwindow.ui
