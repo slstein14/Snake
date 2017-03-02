@@ -11,6 +11,9 @@
 #include <vector>
 #include <QGenericMatrix>
 #include "player.h"
+#include "wall.h"
+#include <vector>
+using namespace std;
 
 class GameWindow : public QWidget
 {
@@ -18,6 +21,9 @@ class GameWindow : public QWidget
 private:
     QTimer *timer;
     Player *player;
+    Wall* wall;
+    int wallnumber;
+    vector<Wall*>walls;
 
 public:
     GameWindow(QWidget *parent = 0);

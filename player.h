@@ -8,10 +8,6 @@
 class Player : QObject
 {
 private:
-    //enum keyPressed {NONE = 0, RIGHT = 1, UP = 2, DOWN = 3, LEFT = 4};
-    //enum direction {WEST = -1, STAND = 0, EAST = 1};
-    //bool rolling, jumping, moveLeft, moveRight, ascend, upPressed;
-    //bool onGround, playerOnWall, playerOnPlatform, wallCollided;
     int posX, posY;
     int sizeX, sizeY;
     int frame;

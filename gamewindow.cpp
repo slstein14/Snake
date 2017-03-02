@@ -11,6 +11,7 @@
 #include <QDir>
 #include <QCoreApplication>
 #include "player.h"
+#include "wall.h"
 using namespace std;
 
 GameWindow::GameWindow(QWidget *parent) :
@@ -36,13 +37,18 @@ GameWindow::GameWindow(QWidget *parent) :
         timer->setInterval(200);
         connect(timer, SIGNAL(timeout()), this, SLOT(updateField()));
         timer->start();
-
+        wallnumber=0;
         //initialize map borders
         int matrix[48][64];
         for(int i=0;i<48;i++){
             for(int j=0;j<64;j++){
                 if(0==j||0==i||63==j||47==i){
                     matrix[i][j]=3;
+                    wallnumber++;
+                    wall = new Wall(this);
+                    wall->setXCoord(j);
+                    wall->setYCoord(i);
+                    walls.push_back(wall);
                 }
                 else matrix[i][j]=0;
             }
@@ -50,6 +56,7 @@ GameWindow::GameWindow(QWidget *parent) :
 
 
         player = new Player(this);
+//        wall = new Wall(this);
 }
 
 void GameWindow::paintEvent(QPaintEvent *e)
@@ -58,7 +65,10 @@ void GameWindow::paintEvent(QPaintEvent *e)
         qDebug()<<"PaintEvent";
         QPainter painter(this);
         player->drawPlayer(painter);
-
+        for(int i=0;i<walls.size();i++){
+            (*(walls.at(i))).drawWall(painter);
+        }
+//        wall->drawWall(painter);
 
         //Object Movement
         if(2==player->getPlayerDirection()){
@@ -80,6 +90,7 @@ void GameWindow::paintEvent(QPaintEvent *e)
             QMessageBox mbox;
             mbox.setText("Game Over");
                mbox.exec();
+            this->close();
         }
     }
 }
