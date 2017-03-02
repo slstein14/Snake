@@ -54,24 +54,33 @@ GameWindow::GameWindow(QWidget *parent) :
 
 void GameWindow::paintEvent(QPaintEvent *e)
 {
-    qDebug()<<"PaintEvent";
-    QPainter painter(this);
-    player->drawPlayer(painter);
+    if(timer->isActive()){
+        qDebug()<<"PaintEvent";
+        QPainter painter(this);
+        player->drawPlayer(painter);
 
 
-    //Object Movement
-    if(2==player->getPlayerDirection()){
-        player->setXCoord(player->getXCoord()+1);
-    }
-    else if(1==player->getPlayerDirection()){
+        //Object Movement
+        if(2==player->getPlayerDirection()){
+            player->setXCoord(player->getXCoord()+1);
+        }
+        else if(1==player->getPlayerDirection()){
 
-        player->setXCoord(player->getXCoord()-1);
-    }
-    else if(0==player->getPlayerDirection()){
-        player->setYCoord(player->getYCoord()-1);
-    }
-    else{
-        player->setYCoord(player->getYCoord()+1);
+            player->setXCoord(player->getXCoord()-1);
+        }
+        else if(0==player->getPlayerDirection()){
+            player->setYCoord(player->getYCoord()-1);
+        }
+        else{
+            player->setYCoord(player->getYCoord()+1);
+        }
+
+        if((player->getXCoord()<0)||(player->getXCoord()>63)||(player->getYCoord()<0)||(player->getYCoord()>47)){
+            timer->stop();
+            QMessageBox mbox;
+            mbox.setText("Game Over");
+               mbox.exec();
+        }
     }
 }
 
