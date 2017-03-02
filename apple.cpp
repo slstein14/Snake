@@ -1,4 +1,6 @@
 #include "apple.h"
+#include <QDir>
+#include <QCoreApplication>
 #include <qdebug.h>
 
 Apple::Apple(QWidget *parent)
