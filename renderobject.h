@@ -1,31 +1,28 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef RENDEROBJECT_H
+#define RENDEROBJECT_H
 #include <QPainter>
 #include <QPixmap>
 #include <QWidget>
 
-
-class Player : QObject
+class RenderObject : QObject
 {
 private:
     int posX, posY;
     int sizeX, sizeY;
-    int frame;
-    int ground, speedX;
-    int lastActionPressed;
-    int playerDirection;
+    int movementDirection;
     QPixmap *image;
     enum direction {Up = 0, Left = 1, Right = 2, Down=3};
 
 public:
-    Player(QWidget *parent);
-    void drawPlayer(QPainter &painter);
+    RenderObject(QWidget *parent);
+    void drawObject(QPainter &painter);
     void setXCoord(int x);
     int getXCoord();
     void setYCoord(int y);
     int getYCoord();
-    int getPlayerDirection();
+    int getDirection();
     void setDirection(int dir);
+    void setImage(QPixmap *image);
 };
 
-#endif // PLAYER_H
+#endif // RENDEROBJECT_H

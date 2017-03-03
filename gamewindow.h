@@ -1,6 +1,6 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
-
+#include "renderobject.h"
 #include <QWidget>
 #include <QPixmap>
 #include <QTimer>
@@ -22,12 +22,12 @@ class GameWindow : public QWidget
     Q_OBJECT
 private:
     QTimer *timer;
-    Player *player;
-    Wall* wall;
-    Apple* apple;
+    RenderObject *player;
+    RenderObject* wall;
+    RenderObject* apple;
     HighScores* scoreSet;
-    vector<Wall*>walls;
-    vector<Player*>segments;
+    vector<RenderObject*>walls;
+    vector<RenderObject*>segments;
     int matrix[48][64];
     bool appleEaten;
     int difficulty;
@@ -35,6 +35,9 @@ private:
     bool paused;
     QMessageBox *msg;
     QMessageBox *pbox;
+    QPixmap *snakeImage;
+    QPixmap *wallImage;
+    QPixmap *appleImage;
 public:
     GameWindow(QWidget *parent = 0);
     void paintEvent(QPaintEvent *e);

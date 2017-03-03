@@ -44,6 +44,13 @@ GameWindow::GameWindow(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(updateField()));
     timer->start();
 
+    //initialize image files
+    snakeImage = new QPixmap("Images/snakeSegment.png");
+    wallImage = new QPixmap("Images/wall.png");
+    appleImage = new QPixmap("Images/apple.png");
+
+
+
     //initialize map borders and matrix
     //Note that the matrix assumes a 640x480 window
     //It takes 10 pixel squares and interprets them as one 'unit'
@@ -51,9 +58,10 @@ GameWindow::GameWindow(QWidget *parent) :
         for(int j=0;j<64;j++){
             if(0==j||0==i||63==j||47==i){
                 matrix[i][j]=3;
-                wall = new Wall(this);
+                wall = new RenderObject(this);
                 wall->setXCoord(j);
                 wall->setYCoord(i);
+                wall->setImage(wallImage);
                 walls.push_back(wall);
             }
             else matrix[i][j]=0;
@@ -62,15 +70,17 @@ GameWindow::GameWindow(QWidget *parent) :
 
     //initialize snake
     for(int i=4;i>1;i--){
-        player = new Player(this);
+        player = new RenderObject(this);
         player->setXCoord(i);
         player->setYCoord(1);
+        player->setImage(snakeImage);
         segments.push_back(player);
     }
 
     //initialize apple randomly
     srand(time(0));
-    apple = new Apple(this);
+    apple = new RenderObject(this);
+    apple->setImage(appleImage);
     this->moveApple();
 
     score=0;
@@ -80,14 +90,14 @@ void GameWindow::paintEvent(QPaintEvent *e)
 {//Paint Event Draws The Images On The Screen
     if(timer->isActive()){//Only if the game is moving
         QPainter painter(this);//Painter object indicates what window to render in
-        apple->drawApple(painter);//Renders the Apple object
+        apple->drawObject(painter);//Renders the Apple object
 
         for(int i=0;i<segments.size();i++){//Renders each segment of the snake
-            (*(segments.at(i))).drawPlayer(painter);
+            (*(segments.at(i))).drawObject(painter);
         }
 
         for(int i=0;i<walls.size();i++){//Renders each wall segment
-            (*(walls.at(i))).drawWall(painter);
+            (*(walls.at(i))).drawObject(painter);
         }
     }
 }
@@ -97,22 +107,22 @@ void GameWindow::keyPressEvent(QKeyEvent *evt)
     switch(evt->key())
         {//Sets the snake based on the arrow keys, and pauses based on P and Esc
         case Qt::Key_Right:
-            if(player->getPlayerDirection()!=1){
+            if(player->getDirection()!=1){
                 player->setDirection(2);
             }
             break;
             case Qt::Key_Down:
-        if(player->getPlayerDirection()!=0){
+        if(player->getDirection()!=0){
                 player->setDirection(3);
             }
             break;
         case Qt::Key_Up:
-            if(player->getPlayerDirection()!=3){
+            if(player->getDirection()!=3){
                 player->setDirection(0);
             }
             break;
         case Qt::Key_Left:
-            if(player->getPlayerDirection()!=2){
+            if(player->getDirection()!=2){
                 player->setDirection(1);
             }
             break;
@@ -140,15 +150,15 @@ void GameWindow::moveSnake()
     //the direction last pressed by the player
     //The other segments remain in place, but the new back segment will move next time
     rotate(segments.begin(),segments.end()-1,segments.end());
-    if(2==player->getPlayerDirection()){
+    if(2==player->getDirection()){
         (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord()+1);
         (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord());
     }
-    else if(1==player->getPlayerDirection()){
+    else if(1==player->getDirection()){
         (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord()-1);
         (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord());
     }
-    else if(0==player->getPlayerDirection()){
+    else if(0==player->getDirection()){
         (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord());
         (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord()-1);
     }
@@ -162,7 +172,7 @@ void GameWindow::moveSnake()
         //Flag causes a new apple to appear next tick
         appleEaten=true;
         //Adds a segment to the snake
-        Player *newseg = new Player(this);
+        RenderObject *newseg = new RenderObject(this);
         newseg->setXCoord(backX);
         newseg->setYCoord(backY);
         segments.push_back(newseg);

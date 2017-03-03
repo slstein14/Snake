@@ -15,21 +15,17 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     gamewindow.cpp \
-    player.cpp \
-    wall.cpp \
-    apple.cpp \
     highscores.cpp \
     contactus.cpp \
-    controls.cpp
+    controls.cpp \
+    renderobject.cpp
 
 HEADERS  += mainwindow.h \
     gamewindow.h \
-    player.h \
-    wall.h \
-    apple.h \
     highscores.h \
     contactus.h \
-    controls.h
+    controls.h \
+    renderobject.h
 
 FORMS    += mainwindow.ui \
     highscores.ui \
