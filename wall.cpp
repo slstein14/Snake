@@ -12,16 +12,15 @@ Wall::Wall(QWidget *parent)
      bin.cdUp();
      QDir::setCurrent(bin.absolutePath());
  #endif
-    posX = 1; //starts at 10,10 in matrix
+    posX = 1; //starts at 10,10 in matrix (immediately moved by the setup)
     posY = 1;
-    sizeX = 10;//size is 10x10px to start (1 segment)
+    sizeX = 10;//size is 10x10px (1 matrix unit)
     sizeY = 10;
     image = new QPixmap("Images/wall.png");
 }
 
 void Wall::drawWall(QPainter &painter)
-{
-   // qDebug()<<"Wall PaintEvent at X: "<<posX<<" Y: "<<posY;
+{//Draws walls at the appropriate place
     painter.drawPixmap(10*posX, 10*posY, sizeX, sizeY, *image);//Converts matrix location to pixel location
 }
 

@@ -14,6 +14,7 @@
 #include "wall.h"
 #include <vector>
 #include "apple.h"
+#include "highscores.h"
 using namespace std;
 
 class GameWindow : public QWidget
@@ -24,17 +25,25 @@ private:
     Player *player;
     Wall* wall;
     Apple* apple;
-    int wallnumber;
+    HighScores* scoreSet;
     vector<Wall*>walls;
     vector<Player*>segments;
     int matrix[48][64];
     bool appleEaten;
+    int difficulty;
+    int score;
+    bool paused;
+    QMessageBox *msg;
+    QMessageBox *pbox;
 public:
     GameWindow(QWidget *parent = 0);
     void paintEvent(QPaintEvent *e);
     void keyPressEvent(QKeyEvent *evt);
     void moveSnake();
     void moveApple();
+    void setDifficulty(int difficulty);
+    void sendHighScoreObject(HighScores* scoreSet);
+    void pauseMenu();
 
 
 public slots:

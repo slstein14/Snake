@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "gamewindow.h"
+#include "highscores.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,12 +22,19 @@ private slots:
 
     void on_actionContact_Us_triggered();
 
-    void on_actionNew_Game_triggered();
+    void on_actionHigh_Score_triggered();
+
+    void on_actionEasy_triggered();
+
+    void on_actionMedium_triggered();
+
+    void on_actionHard_triggered();
 
 private:
     Ui::MainWindow *ui;
 
     GameWindow* game;
+    HighScores* hScore;
 };
 
 #endif // MAINWINDOW_H

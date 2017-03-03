@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui quick
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,12 +17,15 @@ SOURCES += main.cpp\
     gamewindow.cpp \
     player.cpp \
     wall.cpp \
-    apple.cpp
+    apple.cpp \
+    highscores.cpp
 
 HEADERS  += mainwindow.h \
     gamewindow.h \
     player.h \
     wall.h \
-    apple.h
+    apple.h \
+    highscores.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    highscores.ui

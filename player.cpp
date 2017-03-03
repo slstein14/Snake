@@ -12,17 +12,16 @@ Player::Player(QWidget *parent)
      bin.cdUp();
      QDir::setCurrent(bin.absolutePath());
  #endif
-        posX = 3; //starts at 30,30 in matrix
+        posX = 3; //starts at 30,30 in matrix (immediately moved by the setup)
         posY = 3;
-        sizeX = 10;//size is 10x10px to start (1 segment)
+        sizeX = 10;//size is 10x10px (1 matrix unit)
         sizeY = 10;
         playerDirection=2;
         image = new QPixmap("Images/snakeSegment.png");
 }
 
 void Player::drawPlayer(QPainter &painter)
-{
-    qDebug()<<"Player PaintEvent at X: "<<posX<<" Y: "<<posY;
+{//Draws the snake segment at the appropriate location
     painter.drawPixmap(10*posX, 10*posY, sizeX, sizeY, *image);//Converts matrix location to pixel location
 }
 
