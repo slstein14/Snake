@@ -37,10 +37,17 @@
     </widget>
     <addaction name="menuNew_Game"/>
     <addaction name="actionHigh_Score"/>
-    <addaction name="actionContact_Us"/>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionControls"/>
+    <addaction name="actionContact_Us"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionHigh_Score">
@@ -71,6 +78,16 @@
   <action name="actionHard">
    <property name="text">
     <string>Hard</string>
+   </property>
+  </action>
+  <action name="actionControls">
+   <property name="text">
+    <string>Controls</string>
+   </property>
+  </action>
+  <action name="actionContact_Us_2">
+   <property name="text">
+    <string>Contact Us</string>
    </property>
   </action>
  </widget>

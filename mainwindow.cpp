@@ -27,23 +27,22 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setPalette(palette);
     game=NULL;
     hScore = NULL;
+    contact = NULL;
+    controls = NULL;
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     delete hScore;
+    delete contact;
+    delete controls;
 }
 
 void MainWindow::on_actionQuit_triggered()
 {
     //Close main window
     this->close();
-}
-
-void MainWindow::on_actionContact_Us_triggered()
-{
-//needs its own formUI
 }
 
 void MainWindow::on_actionHigh_Score_triggered()
@@ -129,4 +128,22 @@ void MainWindow::on_actionHard_triggered()
             game->sendHighScoreObject(hScore);
         }
         game->show();
+}
+
+void MainWindow::on_actionControls_triggered()
+{
+    if(controls==NULL){
+        controls = new Controls();
+    }
+    controls->show();
+    //needs its own formUI
+}
+
+void MainWindow::on_actionContact_Us_triggered()
+{
+    if(contact==NULL){
+        contact = new ContactUs();
+    }
+    contact->show();
+    //needs its own formUI
 }

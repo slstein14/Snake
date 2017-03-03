@@ -18,14 +18,20 @@ SOURCES += main.cpp\
     player.cpp \
     wall.cpp \
     apple.cpp \
-    highscores.cpp
+    highscores.cpp \
+    contactus.cpp \
+    controls.cpp
 
 HEADERS  += mainwindow.h \
     gamewindow.h \
     player.h \
     wall.h \
     apple.h \
-    highscores.h
+    highscores.h \
+    contactus.h \
+    controls.h
 
 FORMS    += mainwindow.ui \
-    highscores.ui
+    highscores.ui \
+    contactus.ui \
+    controls.ui
