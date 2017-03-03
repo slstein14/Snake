@@ -1,6 +1,8 @@
 #include "highscores.h"
 #include "ui_highscores.h"
 #include <fstream>
+#include <QDir>
+#include <QCoreApplication>
 using namespace std;
 
 HighScores::HighScores(QWidget *parent):QWidget(parent),

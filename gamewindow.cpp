@@ -172,6 +172,7 @@ void GameWindow::moveSnake()
         RenderObject *newseg = new RenderObject(this);
         newseg->setXCoord(backX);
         newseg->setYCoord(backY);
+        newseg->setImage(snakeImage);
         segments.push_back(newseg);
         //Increases the player score
         score++;
