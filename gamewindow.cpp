@@ -6,9 +6,6 @@
 #include <time.h>
 #include <QDir>
 #include <QCoreApplication>
-#include "player.h"
-#include "wall.h"
-#include "apple.h"
 using namespace std;
 
 GameWindow::GameWindow(QWidget *parent) :

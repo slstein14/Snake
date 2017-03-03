@@ -10,10 +10,7 @@
 #include <QPushButton>
 #include <vector>
 #include <QGenericMatrix>
-#include "player.h"
-#include "wall.h"
 #include <vector>
-#include "apple.h"
 #include "highscores.h"
 using namespace std;
 
