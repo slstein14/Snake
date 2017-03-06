@@ -16,7 +16,6 @@ RenderObject::RenderObject(QWidget *parent)
         posY = 3;
         sizeX = 10;//size is 10x10px (1 matrix unit)
         sizeY = 10;
-        movementDirection=2;//Only used for Snake Object
         image = new QPixmap("Images/default.png");//Default Image file
 }
 
@@ -43,16 +42,6 @@ void RenderObject::setYCoord(int y)
 int RenderObject::getYCoord()
 {
     return posY;
-}
-
-int RenderObject::getDirection()
-{
-    return movementDirection;
-}
-
-void RenderObject::setDirection(int dir)
-{
-    movementDirection=dir;
 }
 
 void RenderObject::setImage(QPixmap *image)

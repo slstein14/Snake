@@ -9,7 +9,6 @@ class RenderObject : QObject
 private:
     int posX, posY;
     int sizeX, sizeY;
-    int movementDirection;
     QPixmap *image;
     enum direction {Up = 0, Left = 1, Right = 2, Down=3};
 
@@ -20,8 +19,6 @@ public:
     int getXCoord();
     void setYCoord(int y);
     int getYCoord();
-    int getDirection();
-    void setDirection(int dir);
     void setImage(QPixmap *image);
 };
 

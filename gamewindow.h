@@ -30,6 +30,8 @@ private:
     int difficulty;
     int score;
     bool paused;
+    int direction;
+    bool newDirection;
     QMessageBox *msg;
     QMessageBox *pbox;
     QPixmap *snakeImage;

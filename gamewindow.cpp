@@ -46,7 +46,8 @@ GameWindow::GameWindow(QWidget *parent) :
     wallImage = new QPixmap("Images/wall.png");
     appleImage = new QPixmap("Images/apple.png");
 
-
+    direction=2;
+    bool newDirection=false;
 
     //initialize map borders and matrix
     //Note that the matrix assumes a 640x480 window
@@ -101,36 +102,39 @@ void GameWindow::paintEvent(QPaintEvent *e)
 
 void GameWindow::keyPressEvent(QKeyEvent *evt)
 {//Detects what key the user has pressed
-    switch(evt->key())
-        {//Sets the snake based on the arrow keys, and pauses based on P and Esc
-        case Qt::Key_Right:
-            if(player->getDirection()!=1){
-                player->setDirection(2);
-            }
-            break;
-            case Qt::Key_Down:
-        if(player->getDirection()!=0){
-                player->setDirection(3);
-            }
-            break;
-        case Qt::Key_Up:
-            if(player->getDirection()!=3){
-                player->setDirection(0);
-            }
-            break;
-        case Qt::Key_Left:
-            if(player->getDirection()!=2){
-                player->setDirection(1);
-            }
-            break;
-        case Qt::Key_Escape:
-        case Qt::Key_P:
-            if(!paused){
-                pauseMenu();
-            }
-        break;
-        default:
-            break;
+    if(false==newDirection){
+        newDirection=true;
+        switch(evt->key())
+            {//Sets the snake based on the arrow keys, and pauses based on P and Esc
+            case Qt::Key_Right:
+                if(direction!=1){
+                    direction=2;
+                }
+                break;
+                case Qt::Key_Down:
+            if(direction!=0){
+                    direction=3;
+                }
+                break;
+            case Qt::Key_Up:
+                if(direction!=3){
+                    direction=0;
+                }
+                break;
+            case Qt::Key_Left:
+                if(direction!=2){
+                    direction=1;
+                }
+                break;
+            case Qt::Key_Escape:
+            case Qt::Key_P:
+                if(!paused){
+                    pauseMenu();
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -147,15 +151,15 @@ void GameWindow::moveSnake()
     //the direction last pressed by the player
     //The other segments remain in place, but the new back segment will move next time
     rotate(segments.begin(),segments.end()-1,segments.end());
-    if(2==player->getDirection()){
+    if(2==direction){
         (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord()+1);
         (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord());
     }
-    else if(1==player->getDirection()){
+    else if(1==direction){
         (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord()-1);
         (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord());
     }
-    else if(0==player->getDirection()){
+    else if(0==direction){
         (*(segments.at(0))).setXCoord((*(segments.at(1))).getXCoord());
         (*(segments.at(0))).setYCoord((*(segments.at(1))).getYCoord()-1);
     }
@@ -272,5 +276,6 @@ void GameWindow::updateField()
         }
         //Redraws the entire screen at once
         this->update();
+        newDirection=false;
     }
 }
