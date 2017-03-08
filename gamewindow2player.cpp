@@ -121,6 +121,16 @@ void GameWindow2Player::paintEvent(QPaintEvent *e)
 void GameWindow2Player::keyPressEvent(QKeyEvent *evt)
 {//Detects what key the user has pressed
     qDebug()<<"Key Event";
+
+    switch(evt->key()){
+    case Qt::Key_Escape:
+    case Qt::Key_P:
+        if(!paused){
+            pauseMenu();
+        }
+        break;
+    }
+
     if(false==newDirection1){
         qDebug()<<"Key 1 Event?";
         switch(evt->key())
@@ -147,12 +157,6 @@ void GameWindow2Player::keyPressEvent(QKeyEvent *evt)
                 if(direction1!=2){
                     newDirection1=true;
                     direction1=1;
-                }
-                break;
-            case Qt::Key_Escape:
-            case Qt::Key_P:
-                if(!paused){
-                    pauseMenu();
                 }
                 break;
             default:
@@ -185,12 +189,6 @@ void GameWindow2Player::keyPressEvent(QKeyEvent *evt)
                 if(direction2!=2){
                     newDirection2=true;
                     direction2=1;
-                }
-                break;
-            case Qt::Key_Escape:
-            case Qt::Key_P:
-                if(!paused){
-                    pauseMenu();
                 }
                 break;
             default:
