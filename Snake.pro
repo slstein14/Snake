@@ -18,14 +18,16 @@ SOURCES += main.cpp\
     highscores.cpp \
     contactus.cpp \
     controls.cpp \
-    renderobject.cpp
+    renderobject.cpp \
+    gamewindow2player.cpp
 
 HEADERS  += mainwindow.h \
     gamewindow.h \
     highscores.h \
     contactus.h \
     controls.h \
-    renderobject.h
+    renderobject.h \
+    gamewindow2player.h
 
 FORMS    += mainwindow.ui \
     highscores.ui \

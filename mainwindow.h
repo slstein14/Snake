@@ -6,6 +6,7 @@
 #include "highscores.h"
 #include "contactus.h"
 #include "controls.h"
+#include "gamewindow2player.h"
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +35,12 @@ private slots:
 
     void on_actionControls_triggered();
 
+    void on_action2_Player_triggered();
+
+    void on_action2_Player_Host_triggered();
+
+    void on_action2_Player_Join_triggered();
+
 private:
     Ui::MainWindow *ui;
 
@@ -41,6 +48,7 @@ private:
     HighScores* hScore;
     ContactUs* contact;
     Controls* controls;
+    GameWindow2Player* game2;
 };
 
 #endif // MAINWINDOW_H

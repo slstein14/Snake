@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     palette.setBrush(QPalette::Background, bkgnd);
     this->setPalette(palette);
     game=NULL;
+    game2=NULL;
     hScore = NULL;
     contact = NULL;
     controls = NULL;
@@ -37,6 +38,8 @@ MainWindow::~MainWindow()
     delete hScore;
     delete contact;
     delete controls;
+    delete game;
+    delete game2;
 }
 
 void MainWindow::on_actionQuit_triggered()
@@ -146,4 +149,38 @@ void MainWindow::on_actionContact_Us_triggered()
     }
     contact->show();
     //needs its own formUI
+}
+
+void MainWindow::on_action2_Player_triggered()
+{
+    if(hScore==NULL)
+    {
+        hScore = new HighScores();
+    }else{
+        delete hScore;
+        hScore = new HighScores();
+    }
+
+    if(game2 == NULL)
+        {
+            game2 = new GameWindow2Player();
+            game2->setDifficulty(1);
+            game2->sendHighScoreObject(hScore);
+        }else{
+            delete game2;
+            game2 = new GameWindow2Player();
+            game2->setDifficulty(1);
+            game2->sendHighScoreObject(hScore);
+        }
+        game2->show();
+}
+
+void MainWindow::on_action2_Player_Host_triggered()
+{
+
+}
+
+void MainWindow::on_action2_Player_Join_triggered()
+{
+
 }
